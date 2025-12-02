@@ -136,16 +136,16 @@ install_shadowsocks() {
     echo -e "${GREEN}最新版本: $LATEST_VERSION${PLAIN}"
     
     # 下载文件
-    DOWNLOAD_URL="https://github.com/shadowsocks/shadowsocks-rust/releases/download/${LATEST_VERSION}/shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-gnu.tar.xz"
+    DOWNLOAD_URL="https://github.com/shadowsocks/shadowsocks-rust/releases/download/${LATEST_VERSION}/shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-musl.tar.xz"
     echo -e "${CYAN}正在从 $DOWNLOAD_URL 下载...${PLAIN}"
     
     wget --no-check-certificate -q --show-progress -N "$DOWNLOAD_URL"
     
-    if [[ $? -ne 0 || ! -e "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-gnu.tar.xz" ]]; then
+    if [[ $? -ne 0 || ! -e "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-musl.tar.xz" ]]; then
         echo -e "${RED}下载失败！尝试备用方法...${PLAIN}"
-        curl -L --progress-bar -o "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-gnu.tar.xz" "$DOWNLOAD_URL"
+        curl -L --progress-bar -o "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-musl.tar.xz" "$DOWNLOAD_URL"
         
-        if [[ $? -ne 0 || ! -e "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-gnu.tar.xz" ]]; then
+        if [[ $? -ne 0 || ! -e "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-musl.tar.xz" ]]; then
             echo -e "${RED}Shadowsocks Rust 下载失败！请检查网络连接或手动下载${PLAIN}"
             exit 1
         fi
@@ -153,7 +153,7 @@ install_shadowsocks() {
     
     # 解压文件
     echo -e "${CYAN}解压文件...${PLAIN}"
-    tar -xf "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-gnu.tar.xz"
+    tar -xf "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-musl.tar.xz"
     
     if [[ ! -e "ssserver" ]]; then
         echo -e "${RED}解压失败！${PLAIN}"
@@ -165,7 +165,7 @@ install_shadowsocks() {
     mv -f ssserver /usr/local/bin/
     
     # 清理其他文件
-    rm -f "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-gnu.tar.xz"
+    rm -f "shadowsocks-${LATEST_VERSION}.${ARCH}-unknown-linux-musl.tar.xz"
     rm -f sslocal ssmanager ssservice ssurl 2>/dev/null
     
     echo -e "${GREEN}Shadowsocks Rust 安装完成！${PLAIN}"
